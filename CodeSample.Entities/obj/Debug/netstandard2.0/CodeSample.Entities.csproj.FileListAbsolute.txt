@@ -1,0 +1,17 @@
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\bin\Debug\netstandard2.0\CodeSample.Entities.deps.json
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\bin\Debug\netstandard2.0\CodeSample.Entities.dll
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\bin\Debug\netstandard2.0\CodeSample.Entities.pdb
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.AssemblyInfoInputs.cache
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.AssemblyInfo.cs
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.csproj.CoreCompileInputs.cache
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.dll
+E:\HOME\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.pdb
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\bin\Debug\netstandard2.0\CodeSample.Entities.deps.json
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\bin\Debug\netstandard2.0\CodeSample.Entities.dll
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\bin\Debug\netstandard2.0\CodeSample.Entities.pdb
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.csprojAssemblyReference.cache
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.AssemblyInfoInputs.cache
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.AssemblyInfo.cs
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.csproj.CoreCompileInputs.cache
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.dll
+D:\WORK\Dvayweb\CodeSample\CURRENT\CodeSample\CodeSample.Entities\obj\Debug\netstandard2.0\CodeSample.Entities.pdb

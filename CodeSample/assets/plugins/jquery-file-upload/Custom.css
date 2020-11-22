@@ -1,0 +1,231 @@
+﻿
+
+
+
+.vScroll{
+    width:100%;       
+    overflow:auto; 
+}
+
+
+.mx-width-form {
+            max-width: 315px;
+        }
+
+.vdh {
+            height: 2px;
+        }
+.form-control {
+    color:#999;
+}
+.mt10 {
+    margin:10px 0px;
+}
+.ml1 {
+    margin-left: 1%;
+}
+
+.btnWidth {
+    width: 110px;
+}
+.pl0 {
+    padding-left: 0px;
+}
+
+.theamColor {
+    background-color:rgba(52, 73, 94, 0.80);
+    color:#fff;
+}
+
+.mt20 {
+    margin: 20px 0px;
+}
+.minWidth100 {
+    min-width:100px;
+}
+.mt210 {
+    margin-top: 10px; 
+}
+.mt212 {
+       margin-top: 18px; 
+}
+.mw118 {
+   width: 118px;
+}
+
+@media(min-width:992px) {
+    .col-md-right { text-align:right;  }
+}
+/*.btnCancel {
+    background-color:#aaa;   
+  color:#000;
+}
+
+
+.btnCancel:hover {
+    background-color:#fff;   
+}*/
+
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    height: 100%;
+    text-align: center;
+}
+
+    .fileinput-button h4 {
+        display: block;
+        padding-top: 55px;
+        color: #fff;
+    }
+
+    .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        -ms-filter: 'alpha(opacity=0)';
+        filter: 'alpha(opacity=0)';
+        /*font-size: 200px*/
+        direction: ltr;
+        cursor: pointer;
+    }
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+    .fileinput-button input {
+        filter: alpha(opacity=0);
+        font-size: 100%;
+        height: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+/*#region FILE UPLOAD LIST*/
+#ulFileList {
+    list-style-type: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #f8f8f8;
+}
+
+    #ulFileList li {
+        padding: 2px 5px;
+    }
+
+        #ulFileList li:hover {
+            background-color: #f3f3f3;
+        }
+
+        #ulFileList li a.remove-file {
+            float: right;
+            background-color: #cb5a5e;
+            padding: 0 5px;
+            color: #fff;
+            text-decoration: none;
+            margin-left: 5px;
+            cursor: pointer!important;
+
+        }
+
+            #ulFileList li a.remove-file:hover {
+                background-color: #c23f44;
+                cursor: pointer!important;
+            }
+
+        #ulFileList li a.download-file {
+            float: right;
+            background-color: #3598dc;
+            padding: 0 5px;
+            color: #fff;
+            text-decoration: none;
+            margin-left: 5px;
+            cursor: pointer!important;
+        }
+
+        #ulFileList li a.download-file:hover {
+            background-color: #2386ca;
+        }
+
+
+    /*.download-file {
+
+         cursor: pointer!important;
+    }*/
+
+/*#endregion*/
+
+.dragable-container {
+        content: "Drag & drop or click to upload your files";
+        position: absolute;
+        text-align: center;
+        border: 3px dashed #999;
+        padding: 0px 0px 0px 0px !important;
+        cursor: move;
+        position: relative;
+        background-image: url('./img/drag-drop-file-upload.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .dragable-file {
+        border: 3px dashed #999;
+        padding: 140px 50px 10px 50px;
+        cursor: move;
+        position: relative;
+        display: block;
+        width: 100% !important;
+        opacity: 0;
+    }
+
+        .dragable-file:before {
+            display: block;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 40px;
+            margin: -25px 0 0 -100px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #999;
+        }
+
+    .countdown-progress-bar {
+        width: 0%;
+        border: 2px solid green;
+        display: none;
+    }
+
+    #ulFileList li {
+        padding: 2px 5px;
+        display: table;
+    }
+
+        #ulFileList li a.download-file {
+            position: absolute;
+            right: 26px;
+        }
+
+        #ulFileList li a.remove-file {
+            position: absolute;
+            right: 6px;
+        }
+
+    .progress {
+        height: 16px !important;
+    }
+
+    #tbl1 tbody {
+        cursor: move !important;
+    }

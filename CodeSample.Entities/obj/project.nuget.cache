@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "DLKjWo8AiKGcbM5ofg+ncGSDMov75flUHnQl2+Z9sbkscDOmfCflM1WOgQei3/Ofl6PD8Xiona9DmJnrXOpYpQ==",
+  "success": true,
+  "projectFilePath": "D:\\WORK\\Dvayweb\\CodeSample\\CURRENT\\CodeSample\\CodeSample.Entities\\CodeSample.Entities.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Giri\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Giri\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,364 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Employees";
+}
+
+@model IPagedList<CodeSample.Logics.VM.EmployeeVM>
+
+<div class="ibox" ng-controller="childController">
+    <div class="ibox-head">
+        <h3 class="ibox-title">
+            @ViewBag.Title
+        </h3>
+        <div class="ibox-tools">
+            <form method="get" action="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            @Html.DropDownList("departmentId", ViewBag.Departments as SelectList, "--Select Department--", new { @class = "form-control mr-2" })
+
+                            @Html.DropDownList("country", ViewBag.Countries as SelectList, "--Select Country--", new { @class = "form-control mr-2" })
+
+                            <input type="text" name="q" value="@(Request.QueryString["q"])" class="form-control" id="search" placeholder="Search...">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-primary mr-2">Search</button>
+                                <a href='javascript:void(0)' class="btn btn-primary" ng-click="addEmployee()">Add Employee</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="ibox-body" id="container_body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+
+                <div class="row">
+                    <div class="col-md-12  table-responsive">
+                        <table class="table table-bordered table-striped table-hover tbl-bluk">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Is Active</th>
+                                    <th>Department</th>
+                                    <th>@HtmlViewHelper.GetSortingTag(Url, "Name", "firstname")</th>
+                                    <th>@HtmlViewHelper.GetSortingTag(Url, "Email", "email")</th>
+                                    <th>@HtmlViewHelper.GetSortingTag(Url, "Mobile", "mobile")</th>
+
+                                    <th>DOB</th>
+                                    <th>Gender</th>
+
+                                    <th>ZipCode</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>Address</th>
+
+                                    <th style="min-width:110px;">@HtmlViewHelper.GetSortingTag(Url, "Action On", "lastactivityon")</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    int index = 0;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>@(Model.PageSize * (Model.PageNumber - 1) + index)</td>
+
+                                        <td>
+                                            @if (item.IsActive)
+                                            {
+                                                <span class="badge badge-success">Yes</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-danger">No</span>
+                                            }
+                                        </td>
+                                        <th>@item.DepartmentTitle</th>
+                                        <td>@item.FirstName @item.LastName</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Mobile</td>
+                                        <td>@HtmlViewHelper.FormatDate(item.DOB)</td>
+                                        <td>@item.Gender</td>
+
+                                        <td>@item.ZipCode</td>
+                                        <td>@item.City</td>
+                                        <td>@item.State</td>
+                                        <td>@item.Country</td>
+                                        <td>@item.Address</td>
+
+                                        <td>@HtmlViewHelper.FormatDateTime(item.LastActivityOn)</td>
+
+                                        <td>
+                                            <a href='javascript:void(0)' ng-click="getById(@item.ID)"><span class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Update"></span></a>
+                                            <a href='@Url.Action("Remove", "AEmployee", new { id = item.ID })' onclick="return confirm('Are you sure? You want to delete!')"><span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                @if (Model.Count == 0)
+                {
+                    <div class="alert alert-danger">
+                        <strog>No record found.</strog>
+                    </div>
+                }
+
+                <div class="row">
+                    @if (Model.PageCount > 1)
+                    {
+                        <div class="col-md-4">
+                            Showing @(Model.PageSize * (Model.PageNumber - 1) + 1) to @(Model.PageSize * (Model.PageNumber - 1) + Model.Count) of @Model.TotalItemCount records
+                        </div>
+                        <div class="col-md-8 text-right">
+                            @Html.PagedListPager(Model, page => HtmlViewHelper.GetPagginationTag(Url, page, Model.PageSize))
+                        </div>
+                    }
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal fade" id="addform_modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="addform" ng-submit="saveData()" novalidate="novalidate" autocomplete="off">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" ng-show="objAdd && objAdd.ID > 0">Update Category</h4>
+                        <h4 class="modal-title" ng-hide="objAdd && objAdd.ID <= 0">Add Category</h4>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row form-group">
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">Department<span class="text-danger">*</span></label>
+                                        @Html.DropDownList("DepartmentId", ViewBag.Departments as SelectList, "--Select Department--", new { @class = "form-control", ng_model = "objAdd.DepartmentId", @required = "required" })
+                                        <span class="has-error" ng-show="(addform.DepartmentId.$touched || addform.$submitted) && addform.DepartmentId.$invalid">
+                                            <span class="help-block">Department is required.</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <br /><br />
+                                        <div class="form-group">
+                                            <label class="checkbox">
+                                                <input type="checkbox" class="form-control" name="IsActive" ng-model="objAdd.IsActive" />
+                                                <span class="input-span"></span>Is Active
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">First Name<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="FirstName" ng-model="objAdd.FirstName" maxlength="100" required />
+                                        <span class="has-error" ng-show="(addform.FirstName.$touched || addform.$submitted) && addform.FirstName.$invalid">
+                                            <span class="help-block">First name is required.</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">Last Name</label>
+                                        <input type="text" class="form-control" name="LastName" ng-model="objAdd.LastName" maxlength="100" />
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">Email Id<span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" name="Email" ng-model="objAdd.Email" maxlength="100" required />
+                                        <span class="has-error" ng-show="(addform.Email.$touched || addform.$submitted)">
+                                            <span class="help-block" ng-show="addform.Email.$error.required">Email is required.</span>
+                                            <span class="help-block" ng-show="addform.Email.$error.email">Invalid email id.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">Mobile No<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="Mobile" ng-model="objAdd.Mobile" maxlength="10" required numbers-only/>
+                                        <span class="has-error" ng-show="(addform.Mobile.$touched || addform.$submitted)">
+                                            <span class="help-block" ng-show="addform.Mobile.$error.required">Email is required.</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">DOB</label>
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" name="DOB" ng-model="objAdd.DOB" maxlength="50" />
+                                            <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">Gender</label> <br />
+                                        <label><input type="radio" name="Gender" value="Male" ng-model="objAdd.Gender" /> Male</label>
+                                        <label><input type="radio" name="Gender" value="Female" ng-model="objAdd.Gender" /> Female</label>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">City</label>
+                                        <input type="text" class="form-control" name="City" ng-model="objAdd.City" maxlength="100" />
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">ZipCode</label>
+                                        <input type="text" class="form-control" name="ZipCode" ng-model="objAdd.ZipCode" maxlength="6"  numbers-only/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">Country<span class="text-danger">*</span></label>
+                                        @Html.DropDownList("Country", ViewBag.Countries as SelectList, "--Select Country--", new { @class = "form-control", @ng_change = "getStates()", ng_model = "objAdd.Country", @required = "required" })
+                                        <span class="has-error" ng-show="(addform.Country.$touched || addform.$submitted) && addform.Country.$invalid">
+                                            <span class="help-block">Country is required.</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <label class="fs-12 fw-600">State</label>
+                                        <select class="form-control" name="State" ng-model="objAdd.State">
+                                            <option value="">--Select State--</option>
+                                            <option ng-repeat="s in states track by $index" ng-value="s.Title">{{s.Title}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <label class="fs-12 fw-600">Address</label>
+                                        <textarea class="form-control" name="Address" ng-model="objAdd.Address" maxlength="2000"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+
+@section scripts{
+    <script>
+        app.controller("childController", function ($scope, $http, $filter) {
+        $scope.objAdd = { Country: null, State: null };
+        $scope.states = [];
+
+        $scope.getStates = function () {
+            $scope.states = [];
+            if ($scope.objAdd.Country) {
+                isLoading(true);
+                $http.get('@Url.Action("GetState", "Master")?countryname=' + $scope.objAdd.Country).then(function (res) {
+                    isLoading(false);
+                    if (res.data.IsSuccess) {
+                        $scope.states = res.data.Data;
+                    } else {
+                        toastr.error('Failed to get data. Please try again!', '', { timeOut: 5000 });
+                    }
+                }, function (error) {
+
+                    isLoading(false);
+                    toastr.error('Failed to get data. Please try again!', '', { timeOut: 5000 })
+                });
+            }
+        }
+
+       $scope.saveData = function () {
+           if ($scope.addform.$valid) {
+               isLoading(true);
+               $http.post('@Url.Action("SaveData", "AEmployee")', $scope.objAdd).then(function (res) {
+                   isLoading(false);
+                   if (res.data.IsSuccess) {
+                       toastr.success('Record updated successfully!', '', { timeOut: 5000 });
+                       window.location.reload();
+                   }
+                   else {
+                       toastr.error('Failed to insert data. Please try again!', '', { timeOut: 5000 });
+                   }
+               }, function (error) {
+                   isLoading(false);
+                   toastr.error('Failed to insert data. Please try again!', '', { timeOut: 5000 })
+               });
+           }
+        }
+
+        $scope.addEmployee = function () {
+            $scope.objAdd = { Country: null, State: null  };
+            $scope.resetForm($scope.addform);
+            $("#addform_modal").modal('show');
+        }
+
+        $scope.getById = function (id) {
+            $scope.objAdd = { Country: null, State: null };
+                isLoading(true);
+                $http.get('@Url.Action("GetById", "AEmployee")/'+id).then(function (res) {
+                    isLoading(false);
+                    if (res.data.IsSuccess) {
+                        $scope.objAdd = res.data.Data;
+                        $scope.objAdd.DOB = $filter('date')($scope.objAdd.DOB, 'dd-MMM-yyyy');
+                        $scope.objAdd.DepartmentId = $scope.objAdd.DepartmentId+"";
+                        $scope.getStates();
+                        $("#addform_modal").modal('show');
+                    } else {
+                        toastr.error('Failed to get data. Please try again!', '', { timeOut: 5000 });
+                    }
+                }, function (error) {
+
+                    isLoading(false);
+                    toastr.error('Failed to get data. Please try again!', '', { timeOut: 5000 })
+                });
+        }
+         
+
+    });
+    </script>
+
+    <script>
+        $(function () {
+            $('.date').datepicker({
+                format: "dd-M-yyyy"
+            });
+        });
+    </script>
+}

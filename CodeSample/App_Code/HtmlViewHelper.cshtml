@@ -1,0 +1,91 @@
+﻿@{ Layout = null;}
+
+@functions{
+    public static string GetPagginationTag(System.Web.Mvc.UrlHelper url, int page, int pageSize)
+    {
+        string[] separateURL = url.Action().Split('?');
+        System.Collections.Specialized.NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(separateURL.Length > 1 ? separateURL[1] : ""); // Pass the Querystring part.
+        queryString["page"] = page.ToString().ToLower();
+        queryString["pagesize"] = pageSize.ToString().ToLower();
+        return separateURL[0] + "?" + queryString.ToString();
+    }
+}
+
+@helper GetSortingTag(System.Web.Mvc.UrlHelper url, string name, string sortingname)
+{
+    string[] separateURL = url.Action().Split('?');
+
+    System.Collections.Specialized.NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(separateURL.Length > 1 ? separateURL[1] : ""); // Pass the Querystring part.
+
+    var asc = queryString["asc"] + ""; var orderby = queryString["orderby"] + "";
+
+    queryString["asc"] = (queryString["orderby"] == sortingname.ToLower() && !string.IsNullOrEmpty(queryString["asc"])) ? !Convert.ToBoolean(queryString["asc"]) + "" : "true";
+    queryString["orderby"] = sortingname.ToLower();
+    //  queryString.Remove("date");
+
+    var fullUrl = separateURL[0] + "?" + queryString.ToString();
+    <a href='@fullUrl'>
+        @name
+        @if (orderby == sortingname.ToLower())
+        {
+            if (asc.ToLower() == "true")
+            {
+                <i class='fa fa-chevron-up'></i>
+            }
+            else
+            {
+                <i class='fa fa-chevron-down'></i>
+            }
+        }
+    </a>
+}
+
+
+@helper GetPaggingTag(System.Web.Mvc.UrlHelper url, string name, string sortingname)
+{
+    string[] separateURL = url.Action().Split('?');
+
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    queryString = System.Web.HttpUtility.ParseQueryString(separateURL.Length > 1 ? separateURL[1] : ""); // Pass the Querystring part.
+
+    var asc = queryString["asc"] + ""; var orderby = queryString["orderby"] + "";
+
+    queryString["asc"] = (queryString["orderby"] == sortingname.ToLower() && !string.IsNullOrEmpty(queryString["asc"])) ? !Convert.ToBoolean(queryString["asc"]) + "" : "true";
+    queryString["orderby"] = sortingname.ToLower();
+    //  queryString.Remove("date");
+
+    var fullUrl = separateURL[0] + "?" + queryString.ToString();
+    <a href='@fullUrl'>
+        @name
+        @if (orderby == sortingname.ToLower())
+        {
+            if (asc.ToLower() == "true")
+            {
+                <i class='fa fa-chevron-up'></i>
+            }
+            else
+            {
+                <i class='fa fa-chevron-down'></i>
+            }
+        }
+    </a>
+}
+
+
+@functions{
+    public static string FormatPrice(object obj)
+    {
+        return string.Format(new System.Globalization.CultureInfo("en-IN"), "{0:N}", obj);
+    }
+
+    public static string FormatDateTime(DateTime? obj)
+    {
+        return obj.HasValue ? obj.Value.ToString("dd-MMM-yyyy hh:mm tt") : "";
+    }
+
+    public static string FormatDate(DateTime? obj)
+    {
+        return obj.HasValue ? obj.Value.ToString("dd-MMM-yyyy") : "";
+    }
+}
+

@@ -1,0 +1,33 @@
+﻿<header class="header" id="headerView">
+    <div class="page-brand">
+        <a href="/">
+            <span class="brand"><img src="http://dvayweb.in/stylesheet/images/logo.png" alt="CodeSample" style="height: 55px;"/></span>
+            <span class="brand-mini">CodeSample</span>
+        </a>
+    </div>
+    <div class="flexbox flex-1">
+        <!-- START TOP-LEFT TOOLBAR-->
+        <ul class="nav navbar-toolbar">
+            <li>
+                <a class="nav-link sidebar-toggler js-sidebar-toggler" href="javascript:;">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+            </li>
+        </ul>
+  
+        <ul class="nav navbar-toolbar">
+            <li class="dropdown dropdown-user">
+                <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
+                    <span>Admin</span>
+                    <img src="/assets/img/admin.jpg" alt="image" />
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href='@Url.Action("SignOut", "Account")'>Logout</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</header>

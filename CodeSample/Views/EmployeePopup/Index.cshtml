@@ -1,0 +1,285 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Employees";
+}
+
+@model IPagedList<CodeSample.Logics.VM.EmployeeVM>
+
+<div class="ibox">
+    <div class="ibox-head">
+        <h3 class="ibox-title">
+            @ViewBag.Title
+        </h3>
+        <div class="ibox-tools">
+            <form method="get" action="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            @Html.DropDownList("departmentId", ViewBag.Departments as SelectList, "--Select Department--", new { @class = "form-control mr-2" })
+
+                            @Html.DropDownList("country", ViewBag.Countries as SelectList, "--Select Country--", new { @class = "form-control mr-2" })
+
+                            <input type="text" name="q" value="@(Request.QueryString["q"])" class="form-control" id="search" placeholder="Search...">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-primary mr-2">Search</button>
+                                <a href='javascript:void(0)' onclick="addEmployee()" class="btn btn-primary">Add Employee</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="ibox-body" id="container_body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+
+                <div class="row">
+                    <div class="col-md-12  table-responsive">
+                        <table class="table table-bordered table-striped table-hover tbl-bluk">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Is Active</th>
+                                    <th>Department</th>
+                                    <th>@HtmlViewHelper.GetSortingTag(Url, "Name", "firstname")</th>
+                                    <th>@HtmlViewHelper.GetSortingTag(Url, "Email", "email")</th>
+                                    <th>@HtmlViewHelper.GetSortingTag(Url, "Mobile", "mobile")</th>
+
+                                    <th>DOB</th>
+                                    <th>Gender</th>
+
+                                    <th>ZipCode</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>Address</th>
+
+                                    <th style="min-width:110px;">@HtmlViewHelper.GetSortingTag(Url, "Action On", "lastactivityon")</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    int index = 0;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    index++;
+                                <tr>
+                                    <td>@(Model.PageSize * (Model.PageNumber - 1) + index)</td>
+
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge badge-success">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">No</span>
+                                        }
+                                    </td>
+                                    <th>@item.DepartmentTitle</th>
+                                    <td>@item.FirstName @item.LastName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Mobile</td>
+                                    <td>@HtmlViewHelper.FormatDate(item.DOB)</td>
+                                    <td>@item.Gender</td>
+
+                                    <td>@item.ZipCode</td>
+                                    <td>@item.City</td>
+                                    <td>@item.State</td>
+                                    <td>@item.Country</td>
+                                    <td>@item.Address</td>
+
+                                    <td>@HtmlViewHelper.FormatDateTime(item.LastActivityOn)</td>
+                                    <td>
+                                        <a href='javascript:void(0)' onclick="editEmployee(@item.ID)"><span class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Update"></span></a>
+                                        <a href='@Url.Action("Remove", "Employee", new { id = item.ID })' onclick="return confirm('Are you sure? You want to delete!')"><span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></span></a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                @if (Model.Count == 0)
+                {
+                    <div class="alert alert-danger">
+                        <strog>No record found.</strog>
+                    </div>
+                }
+
+                <div class="row">
+                    @if (Model.PageCount > 1)
+                    {
+                        <div class="col-md-4">
+                            Showing @(Model.PageSize * (Model.PageNumber - 1) + 1) to @(Model.PageSize * (Model.PageNumber - 1) + Model.Count) of @Model.TotalItemCount records
+                        </div>
+                        <div class="col-md-8 text-right">
+                            @Html.PagedListPager(Model, page => HtmlViewHelper.GetPagginationTag(Url, page, Model.PageSize))
+                        </div>
+                    }
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="addEmployeeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="return submiteEmployeeAddForm(this)">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Employee</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="editEmployeeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="return submiteEmployeeEditForm(this)">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Employee</h4>
+                </div>
+                <div class="modal-body">
+                     
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        function initValidation(form) {
+            $.data(form, 'validator', false);
+            $.validator.unobtrusive.parse(form);
+        }
+       function addEmployee() {
+             isLoading(true);
+             $.ajax({
+                 type: "GET",
+                 url: '@Url.Action("Add", "EmployeePopup")',
+                 contentType: 'text/html; charset=utf-8',
+                 //dataType: 'json',
+                 success: function (data, textStatus, xhr) {
+                     isLoading(false);
+                     $("#addEmployeeModal").find('.modal-body').html(data).promise().done(function () {
+                         initValidation($("#addEmployeeModal").find('form'));
+                         $("#addEmployeeModal").modal();
+                     });
+                 },
+                 error: function (errorData) {
+                     isLoading(false);
+                 }
+             });
+        }
+
+
+         function editEmployee(id) {
+             isLoading(true);
+             $.ajax({
+                 type: "GET",
+                 url: '@Url.Action("Edit", "EmployeePopup")?id='+id,
+                 contentType: 'text/html; charset=utf-8',
+                 success: function (data, textStatus, xhr) {
+                     isLoading(false);
+                     $("#editEmployeeModal").find('.modal-body').html(data).promise().done(function () {
+                         initValidation($("#editEmployeeModal").find('form'));
+                         $("#editEmployeeModal").modal();
+                     });
+                 },
+                 error: function (errorData) {
+                     isLoading(false);
+                     console.log(errorData);
+                 }
+             });
+         }
+
+        function submiteEmployeeAddForm(thiss) {
+
+            if ($(thiss).valid()) {
+                   isLoading(true);
+                   $.ajax({
+                       type: "POST",
+                       url: '@Url.Action("Add", "EmployeePopup")',
+                       data: $(thiss).serialize(),
+                       success: function (data, textStatus, xhr) {
+                           isLoading(false);
+                           if (data.IsSuccess) {
+                               toastr.success("Record added successfully!", '', { timeOut: 5000 })
+                               window.location.reload();
+                           } else {
+                               toastr.error("Failed to add record!", '', { timeOut: 5000 })
+                           }
+                       },
+                       error: function (errorData) {
+                           toastr.error("Failed to add record!", '', { timeOut: 5000 })
+                           isLoading(false);
+                       }
+                   });
+            }
+             return false;
+        }
+     
+        function submiteEmployeeEditForm(thiss) {
+        
+            if ($(thiss).valid()) {
+                   isLoading(true);
+                   $.ajax({
+                       type: "POST",
+                       url: '@Url.Action("Edit", "EmployeePopup")',
+                       data: $(thiss).serialize(),
+                       success: function (data, textStatus, xhr) {
+                           isLoading(false);
+                           if (data.IsSuccess) {
+                               toastr.success("Record added successfully!", '', { timeOut: 5000 })
+                               window.location.reload();
+                           } else {
+                               toastr.error("Failed to add record!", '', { timeOut: 5000 })
+                           }
+                       },
+                       error: function (errorData) {
+                           toastr.error("Failed to add record!", '', { timeOut: 5000 })
+                           isLoading(false);
+                       }
+                   });
+            }
+             return false;
+        }
+    </script>
+}

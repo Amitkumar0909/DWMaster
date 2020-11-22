@@ -1,0 +1,219 @@
+﻿@model CodeSample.Logics.VM.EmployeeVM
+
+@{
+    ViewBag.Title = "Add Employee";
+}
+
+<div class="page-content fade-in-up">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="ibox">
+                <div class="ibox-head">
+
+                    <div style="flex:2;order:1;">
+                        <h3> @ViewBag.Title </h3>
+                    </div>
+
+                    <div style="flex:1;order:2;">
+                        <a href='@Url.Action("Index")' class="btn btn-dark pull-right"> Back </a>
+                    </div>
+
+                </div>
+                <div class="ibox-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content">
+
+                                    @using (Html.BeginForm("Add", "Employee", FormMethod.Post, new { novalidate = "novalidate", @autocomplete = "off" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">Department<span class="text-danger">*</span></label>
+                                                        @Html.DropDownListFor(x => x.DepartmentId, ViewBag.Departments as SelectList, "--Select Department--", new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(x => x.DepartmentId, null, new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <br /><br />
+                                                        <div class="form-group">
+                                                            <label class="checkbox">
+                                                                @Html.CheckBoxFor(x => x.IsActive)
+                                                                <span class="input-span"></span>Is Active
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row form-group">
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">First Name<span class="text-danger">*</span></label>
+                                                        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @maxlength = "500" })
+                                                        @Html.ValidationMessageFor(x => x.FirstName, null, new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">Last Name</label>
+                                                        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @maxlength = "50" })
+                                                        @Html.ValidationMessageFor(x => x.LastName, null, new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group">
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">Email Id<span class="text-danger">*</span></label>
+                                                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @maxlength = "500" })
+                                                        @Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">Mobile No</label>
+                                                        @Html.TextBoxFor(x => x.Mobile, new { @class = "form-control", @maxlength = "50" })
+                                                        @Html.ValidationMessageFor(x => x.Mobile, null, new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group">
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">DOB</label>
+                                                        <div class="input-group date">
+                                                            @Html.TextBoxFor(model => model.DOB, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @maxlength = "20" })
+                                                            <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                                                        </div>
+
+                                                        @Html.ValidationMessageFor(x => x.DOB, null, new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">Gender</label> <br />
+                                                        <label>@Html.RadioButtonFor(x => x.Gender, "Male") Male</label>
+                                                        <label>@Html.RadioButtonFor(x => x.Gender, "Female") Female</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group">
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">City</label>
+                                                        @Html.TextBoxFor(x => x.City, new { @class = "form-control", @maxlength = "500" })
+                                                        @Html.ValidationMessageFor(x => x.City, null, new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">ZipCode</label>
+                                                        @Html.TextBoxFor(x => x.ZipCode, new { @class = "form-control", @maxlength = "50" })
+                                                        @Html.ValidationMessageFor(x => x.ZipCode, null, new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">Country<span class="text-danger">*</span></label>
+                                                        @Html.DropDownListFor(x => x.Country, ViewBag.Countries as SelectList, "--Select Country--", new { @class = "form-control", @onchange = "getStates()" })
+                                                        @Html.ValidationMessageFor(x => x.Country, null, new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-6">
+                                                        <label class="fs-12 fw-600">State</label>
+                                                        @Html.DropDownListFor(x => x.State, ViewBag.States as SelectList, "--Select State--", new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(x => x.State, null, new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <label class="fs-12 fw-600">Address</label>
+                                                        @Html.TextAreaFor(x => x.Address, new { @class = "form-control", @maxlength = "2000" })
+                                                        @Html.ValidationMessageFor(x => x.Address, null, new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <h1>Image</h1>
+                                                <input type="hidden"  value="@(ViewBag.TempPath)" name="tempPath"/>
+                                                @Upload.FileUpload("serviceFile1", "/temp/employee/" + ViewBag.TempPath + "/img/", filetypes:".jpg, .png, .jpg, .jpeg, .gif, .bmp, .svg, .webp", allowlist: "true", allowdownload: "true", allowmultiple: "false", filelength: "290048576");
+
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="row form-group">
+                                            <div class="col-sm-8">
+
+                                            </div>
+                                            <div class="col-sm-4 text-right">
+                                                <a href='@Url.Action("Index")' class="btn btn-dark"> Back </a>
+                                                <button type="submit" class="btn btn-primary btn-v1 mt-8 inline-block" tabindex="4">Save</button>
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script>
+
+        function getStates() {
+            var countryName = $("#Country").val();
+            var ddlState = $("#State");
+
+            ddlState.html('<option value="">--Select State--</option>');
+
+            if (countryName) {
+                isLoading(true);
+                $.ajax({
+                    type: "GET",
+                    url: '/Master/GetState?countryname=' + countryName,
+                    dataType: "json",
+                    success: function (data, textStatus, xhr) {
+                        isLoading(false);
+                        if (data && data.IsSuccess) {
+                            var v = "";
+                            $.each(data.Data, function (i, v1) {
+                                v += "<option value='" + v1.Title + "'>" + v1.Title + "</option>";
+                            });
+                            ddlState.append(v);
+                        }
+                    },
+                    error: function (errorData) {
+                        isLoading(false);
+                    }
+                });
+            }
+
+
+        }
+
+    </script>
+
+
+     <script>
+        $(function () {
+            $('.date').datepicker({
+                format: "dd-M-yyyy"
+            });
+        });
+
+         $(document).ready(function () {
+             $("[id*=dvFileUpload]").each(function () {
+                 initFileUpload($(this), $($('#' + $(this).attr('id') + ' input[type=file]')));
+             });
+             $("[id*=dvFileList]").each(function () {
+                 initFileList($(this));
+             });
+         });
+    </script>
+
+}
